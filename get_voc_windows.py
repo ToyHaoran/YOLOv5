@@ -23,6 +23,30 @@ VOC/images文件夹下有train和val文件夹，分别放置训练集和验证�
 VOC/labels文件夹有train和val文件夹，分别放置训练集和验证集标签（yolo格式）。
 """
 
+# 创建VOC文件夹及子文件夹
+wd = os.getcwd()
+data_base_dir = os.path.join(wd, "VOC\\")
+if not os.path.isdir(data_base_dir):
+    os.mkdir(data_base_dir)
+img_dir = os.path.join(data_base_dir, "images\\")
+if not os.path.isdir(img_dir):
+    os.mkdir(img_dir)
+img_train_dir = os.path.join(img_dir, "train\\")
+if not os.path.isdir(img_train_dir):
+    os.mkdir(img_train_dir)
+img_val_dir = os.path.join(img_dir, "val\\")
+if not os.path.isdir(img_val_dir):
+    os.mkdir(img_val_dir)
+label_dir = os.path.join(data_base_dir, "labels\\")
+if not os.path.isdir(label_dir):
+    os.mkdir(label_dir)
+label_train_dir = os.path.join(label_dir, "train\\")
+if not os.path.isdir(label_train_dir):
+    os.mkdir(label_train_dir)
+label_val_dir = os.path.join(label_dir, "val\\")
+if not os.path.isdir(label_val_dir):
+    os.mkdir(label_val_dir)
+
 sets = [('2012', 'train'), ('2012', 'val'), ('2007', 'train'), ('2007', 'val'), ('2007', 'test')]
 
 classes = ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog",
@@ -68,12 +92,11 @@ def convert_annotation(year, image_id):
 
 
 wd = getcwd()
-
 for year, image_set in sets:
     if not os.path.exists('VOCdevkit\\VOC%s\\labels\\' % year):
         os.makedirs('VOCdevkit\\VOC%s\\labels/' % year)
     image_ids = open('VOCdevkit\\VOC%s\\ImageSets\\Main\\%s.txt' % (year, image_set)).read().strip().split()
-    list_file = open('%s_%s.txt' % (year, image_set), 'w')
+    list_file = open('VOC\\%s_%s.txt' % (year, image_set), 'w')
     for image_id in image_ids:
         list_file.write('%s\\VOCdevkit\\VOC%s\\JPEGImages\\%s.jpg\n' % (wd, year, image_id))
         convert_annotation(year, image_id)
@@ -81,10 +104,10 @@ for year, image_set in sets:
 
 
 # 合并多个文本文件
-def mergeTxt(file_list, outfile, bashpath="VOC"):
-    with open(bashpath + outfile, 'w') as wfd:
+def mergeTxt(file_list, outfile):
+    with open("VOC\\" + outfile, 'w') as wfd:
         for f in file_list:
-            with open(f, 'r') as fd:
+            with open("VOC\\" + f, 'r') as fd:
                 shutil.copyfileobj(fd, wfd)
 
 
@@ -94,30 +117,6 @@ mergeTxt(file_list, outfile)
 file_list = ['2007_train.txt', '2007_val.txt', '2007_test.txt', '2012_train.txt', '2012_val.txt']
 outfile = 'train.all.txt'
 mergeTxt(file_list, outfile)
-
-# 创建VOC文件夹及子文件夹
-wd = os.getcwd()
-data_base_dir = os.path.join(wd, "VOC\\")
-if not os.path.isdir(data_base_dir):
-    os.mkdir(data_base_dir)
-img_dir = os.path.join(data_base_dir, "images\\")
-if not os.path.isdir(img_dir):
-    os.mkdir(img_dir)
-img_train_dir = os.path.join(img_dir, "train\\")
-if not os.path.isdir(img_train_dir):
-    os.mkdir(img_train_dir)
-img_val_dir = os.path.join(img_dir, "val\\")
-if not os.path.isdir(img_val_dir):
-    os.mkdir(img_val_dir)
-label_dir = os.path.join(data_base_dir, "labels\\")
-if not os.path.isdir(label_dir):
-    os.mkdir(label_dir)
-label_train_dir = os.path.join(label_dir, "train\\")
-if not os.path.isdir(label_train_dir):
-    os.mkdir(label_train_dir)
-label_val_dir = os.path.join(label_dir, "val\\")
-if not os.path.isdir(label_val_dir):
-    os.mkdir(label_val_dir)
 
 print(os.path.exists('VOC/train.txt'))
 f = open('VOC/train.txt', 'r')
