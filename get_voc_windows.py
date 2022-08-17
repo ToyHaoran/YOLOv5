@@ -16,7 +16,7 @@ get_voc_windows.py
 
 在VOCdevkit/VOC2007和VOCdevkit/VOC2012目录下可以看到生成了文件夹labels;
 在VOC目录下生成了images和labels文件夹；
-在yolov5目录下生成了文件2007_train.txt, 2007_val.txt, 2007_test.txt, 2012_train.txt,2012_val.txt,train.txt, train.all.txt。
+在VOC目录下生成了文件2007_train.txt, 2007_val.txt, 2007_test.txt, 2012_train.txt,2012_val.txt,train.txt, train.all.txt。
 labels下的文件是JPEGImages文件夹下每一个图像的yolo格式的标注文件，这是由annotations的xml标注文件转换来的
 train.txt和2007_test.txt分别给出了训练集图片和验证集图片的列表，含有每个图片的路径和文件名。
 VOC/images文件夹下有train和val文件夹，分别放置训练集和验证集图片；
@@ -81,8 +81,8 @@ for year, image_set in sets:
 
 
 # 合并多个文本文件
-def mergeTxt(file_list, outfile):
-    with open(outfile, 'w') as wfd:
+def mergeTxt(file_list, outfile, bashpath="VOC"):
+    with open(bashpath + outfile, 'w') as wfd:
         for f in file_list:
             with open(f, 'r') as fd:
                 shutil.copyfileobj(fd, wfd)
@@ -119,8 +119,8 @@ label_val_dir = os.path.join(label_dir, "val\\")
 if not os.path.isdir(label_val_dir):
     os.mkdir(label_val_dir)
 
-print(os.path.exists('train.txt'))
-f = open('train.txt', 'r')
+print(os.path.exists('VOC/train.txt'))
+f = open('VOC/train.txt', 'r')
 lines = f.readlines()
 
 # 使用train.txt中的图片作为yolov5的训练集
@@ -137,8 +137,8 @@ for line in lines:
         print('copying train label file  %s' % line + '\n')
 
 # 使用2007_test.txt中的图片作为yolov5的验证集
-print(os.path.exists('2007_test.txt'))
-f = open('2007_test.txt', 'r')
+print(os.path.exists('VOC/2007_test.txt'))
+f = open('VOC/2007_test.txt', 'r')
 lines = f.readlines()
 
 for line in lines:
